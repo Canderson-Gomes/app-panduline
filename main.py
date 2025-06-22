@@ -13,9 +13,9 @@ app.add_middleware(
 )
 
 # Inicializa Firebase
-cred = credentials.Certificate("firebase_config.json")
+cred = credentials.Certificate("api-imgs-panduline-firebase-adminsdk-fbsvc-75557b552c.json")
 initialize_app(cred, {
-    'storageBucket': 'https://api-imgs-panduline.firebaseapp.com/'
+    'storageBucket': 'api-imgs-panduline.appspot.com'
 })
 @app.post("/upload")
 async def upload_file(file: UploadFile = File(...)):
