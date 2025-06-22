@@ -17,6 +17,9 @@ cred = credentials.Certificate("api-imgs-panduline-firebase-adminsdk-fbsvc-75557
 initialize_app(cred, {
     'storageBucket': 'api-imgs-panduline.appspot.com'
 })
+@app.get("/apiload")
+async def get_api():
+    return {"myapi":"From my api PanduLine"}
 @app.post("/upload")
 async def upload_file(file: UploadFile = File(...)):
     # Lê o conteúdo
