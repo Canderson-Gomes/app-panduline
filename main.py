@@ -23,7 +23,7 @@ async def get_api():
 @app.post("/upload")
 async def upload_file(file: UploadFile = File(...)):
     # Lê o conteúdo
-    contents = await file.read()
+    '''contents = await file.read()
     file_name = f"{uuid.uuid4()}_{file.filename}"
 
     # Salva no Firebase
@@ -32,4 +32,5 @@ async def upload_file(file: UploadFile = File(...)):
     blob.upload_from_string(contents, content_type=file.content_type)
     blob.make_public()  # Torna o arquivo acessível publicamente
 
-    return {"file_url": blob.public_url, "dat":"Deu certo!"}
+    return {"file_url": blob.public_url, "dat":"Deu certo!"}'''
+    return {"dat":"Recebido, mano!"}
