@@ -32,4 +32,4 @@ async def upload_file(file: UploadFile = File(...)):
     blob.upload_from_string(contents, content_type=file.content_type)
     blob.make_public()  # Torna o arquivo acessível publicamente
 
-    return {"file_url": blob.public_url}
+    return {"file_url": blob.public_url, "dat":file_name}
