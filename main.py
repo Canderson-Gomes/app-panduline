@@ -1,36 +1,37 @@
-from fastapi import FastAPI, File, UploadFile
-from firebase_admin import credentials, initialize_app, storage
-import uuid
-from fastapi.middleware.cors import CORSMiddleware
+from fastapi import FastAPI, UploadFile, File
+import boto3
+from botocore.exceptions import NoCredentialsError
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
 
 app = FastAPI()
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],  # ou ['http://localhost:3000']
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+
+# Configurações da AWS
+AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
+
+AWS_REGION = "Europe (Stockholm) eu-north-1"  # ou sua região
+BUCKET_NAME = "app-panduline"
+
+# Cliente S3
+s3 = boto3.client("s3",
+    aws_access_key_id=AWS_ACCESS_KEY_ID,
+    aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
+    region_name=AWS_REGION
 )
 
-# Inicializa Firebase
-cred = credentials.Certificate("api-imgs-panduline-firebase-adminsdk-fbsvc-75557b552c.json")
-initialize_app(cred, {
-    'storageBucket': 'api-imgs-panduline.appspot.com'
-})
-@app.get("/apiload")
-async def get_api():
-    return {"myapi":"From my api PanduLine"}
 @app.post("/upload")
 async def upload_file(file: UploadFile = File(...)):
-    # Lê o conteúdo
-    '''contents = await file.read()
-    file_name = f"{uuid.uuid4()}_{file.filename}"
-
-    # Salva no Firebase
-    bucket = storage.bucket()
-    blob = bucket.blob(file_name)
-    blob.upload_from_string(contents, content_type=file.content_type)
-    blob.make_public()  # Torna o arquivo acessível publicamente
-
-    return {"file_url": blob.public_url, "dat":"Deu certo!"}'''
-    return {"dat":"Recebido, mano!"}
+    try:
+        contents = await file.read()
+        s3.upload_fileobj(
+            Fileobj=bytes(contents),
+            Bucket=BUCKET_NAME,
+            Key=file.filename
+        )
+        url = f"https://{BUCKET_NAME}.s3.{AWS_REGION}.amazonaws.com/{file.filename}"
+        return {"url": url}
+    except NoCredentialsError:
+        return {"error": "Credenciais inválidas"}
