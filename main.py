@@ -12,7 +12,7 @@ app = FastAPI()
 AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
 
-AWS_REGION = "Europe (Stockholm) eu-north-1"  # ou sua região
+AWS_REGION = "eu-north-1"  # ou sua região
 BUCKET_NAME = "app-panduline"
 
 # Cliente S3
