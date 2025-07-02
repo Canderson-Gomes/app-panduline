@@ -2,6 +2,8 @@ albucore==0.0.24
 albumentations==2.0.8
 annotated-types==0.7.0
 anyio==4.9.0
+boto3==1.39.1
+botocore==1.39.1
 CacheControl==0.14.3
 cachetools==5.5.2
 certifi==2025.6.15
@@ -43,6 +45,7 @@ hyperframe==6.1.0
 idna==3.10
 imageio==2.37.0
 insightface==0.7.3
+jmespath==1.0.1
 joblib==1.5.1
 kiwisolver==1.4.8
 lazy_loader==0.4
@@ -67,10 +70,12 @@ pydantic_core==2.33.2
 PyJWT==2.10.1
 pyparsing==3.2.3
 python-dateutil==2.9.0.post0
+python-dotenv==1.1.1
 python-multipart==0.0.20
 PyYAML==6.0.2
 requests==2.32.4
 rsa==4.9.1
+s3transfer==0.13.0
 scikit-image==0.25.2
 scikit-learn==1.7.0
 scipy==1.15.3
