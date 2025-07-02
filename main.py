@@ -21,7 +21,10 @@ s3 = boto3.client("s3",
     aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
     region_name=AWS_REGION
 )
-
+@app.get("/")
+async def getting():
+    return {"api":"api no ar"}
+    
 @app.post("/upload")
 async def upload_file(file: UploadFile = File(...)):
     try:
