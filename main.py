@@ -36,7 +36,7 @@ async def getting():
     
 @app.post("/upload")
 async def upload_file(file: UploadFile = File(...)):
-    try:
+    '''try:
         contents = await file.read()
         s3.upload_fileobj(
             Fileobj=bytes(contents),
@@ -46,4 +46,5 @@ async def upload_file(file: UploadFile = File(...)):
         url = f"https://{BUCKET_NAME}.s3.{AWS_REGION}.amazonaws.com/{file.filename}"
         return {"url": url}
     except NoCredentialsError:
-        return {"error": "Credenciais inválidas"}
+        return {"error": "Credenciais inválidas"}'''
+    return {"sucesso":"Main sucess"}
