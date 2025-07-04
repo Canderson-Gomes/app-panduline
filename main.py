@@ -59,8 +59,22 @@ async def upload_file(file: UploadFile = File(...)):
 
 
 '''
-AKIA3QFM6OASSNO4CHWQ
-  yrmBgsrnXZGerrg3nBoma4oPkRArVkRU5Ueem+wD
+    return self._check_caught_exception(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        attempt_number, caught_exception
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\hp\Documents\devs\back-endPanduLine\venv\Lib\site-packages\botocore\retryhandler.py", line 416, in _check_caught_exception
+    raise caught_exception
+  File "C:\Users\hp\Documents\devs\back-endPanduLine\venv\Lib\site-packages\botocore\endpoint.py", line 278, in _do_get_response
+    http_response = self._send(request)
+  File "C:\Users\hp\Documents\devs\back-endPanduLine\venv\Lib\site-packages\botocore\endpoint.py", line 382, in _send
+    return self.http_session.send(request)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "C:\Users\hp\Documents\devs\back-endPanduLine\venv\Lib\site-packages\botocore\httpsession.py", line 493, in send
+    raise EndpointConnectionError(endpoint_url=request.url, error=e)
+botocore.exceptions.EndpointConnectionError: Could not connect to the endpoint URL: "https://app-panduline.s3.eu-north-1.amazonaws.com/371485131_352732363834184_6186237823384154816_n.jpg"
 
 
 '''
