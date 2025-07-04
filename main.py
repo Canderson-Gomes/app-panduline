@@ -50,4 +50,35 @@ async def upload_file(file: UploadFile = File(...)):
         return {"url": url}
     except NoCredentialsError:
         return {"error": "Credenciais inválidas"}
+
+
+
+
+
+
+
+
+'''
+
+  File "C:\Users\hp\Documents\devs\back-endPanduLine\venv\main.py", line 55, in upload_file
+    s3.upload_fileobj(
+    ~~~~~~~~~~~~~~~~~^
+        Fileobj=bytes(contents),
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+        Bucket=BUCKET_NAME,
+        ^^^^^^^^^^^^^^^^^^^
+        Key=file.filename
+        ^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\hp\Documents\devs\back-endPanduLine\venv\Lib\site-packages\botocore\context.py", line 123, in wrapper
+    return func(*args, **kwargs)
+  File "C:\Users\hp\Documents\devs\back-endPanduLine\venv\Lib\site-packages\boto3\s3\inject.py", line 657, in upload_fileobj
+    raise ValueError('Fileobj must implement read')
+ValueError: Fileobj must implement read
+
+
+
+
+'''
     
