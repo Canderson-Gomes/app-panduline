@@ -32,10 +32,13 @@ s3 = boto3.client("s3",
 )
 @app.get("/")
 async def getting():
+    
     return {"api":"api no ar"}
     
 @app.post("/upload")
-async def upload_file(file: UploadFile = File(...)):
+async def upload_file():
+    #file: UploadFile = File(...)
+    return {"sucesso":"Main sucess"}
     '''try:
         contents = await file.read()
         s3.upload_fileobj(
@@ -47,4 +50,4 @@ async def upload_file(file: UploadFile = File(...)):
         return {"url": url}
     except NoCredentialsError:
         return {"error": "Credenciais inválidas"}'''
-    return {"sucesso":"Main sucess"}
+    
