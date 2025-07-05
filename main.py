@@ -78,6 +78,7 @@ async def upload_file(file: UploadFile = File(...)):
             #ExtraArgs={"ContentType": file.content_type}
         #)
         url = f"https://{BUCKET_NAME}.s3.{AWS_REGION}.amazonaws.com/{key}"
+        #index.add(embedding)
         print(url)
         return {"url": url, "key":key, "emb": embedding}
     except NoCredentialsError:
