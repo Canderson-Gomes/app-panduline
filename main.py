@@ -48,7 +48,9 @@ async def upload_file(file: UploadFile = File(...)):
             Fileobj=file_stream,
             Bucket=BUCKET_NAME,
             Key=file.filename,
-            ExtraArgs={"ContentType":file.content_type}
+            ExtraArgs={"ContentType":file.content_type, 
+                      "ACL": "public-read"
+                      }
         )
         url = f"https://{BUCKET_NAME}.s3.{AWS_REGION}.amazonaws.com/{file.filename}"
         print(url)
