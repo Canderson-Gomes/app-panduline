@@ -1,6 +1,6 @@
 from fastapi import FastAPI, UploadFile, File
 import boto3
-import json, io
+import json, io, uuid
 from botocore.exceptions import NoCredentialsError
 import os, shutil
 from dotenv import load_dotenv
