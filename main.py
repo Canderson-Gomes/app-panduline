@@ -42,7 +42,7 @@ async def getting():
     
     return {"api":"api no ar"}
     
-@app.post("/uploadst/")
+@app.post("/upload")
 async def upload_file(file: UploadFile = File(...)):
     #
     #return {"sucesso":"Main sucess"}
