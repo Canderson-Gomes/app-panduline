@@ -2,7 +2,7 @@ from fastapi import FastAPI, UploadFile, File
 import boto3
 import json, io
 from botocore.exceptions import NoCredentialsError
-import os
+import os, shutil
 from dotenv import load_dotenv
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -46,18 +46,25 @@ async def getting():
 async def upload_file(file: UploadFile = File(...)):
     #
     #return {"sucesso":"Main sucess"}
+    tmp_path = f"temp_{uuid.uuid4().hex}{os.path.splitext(file.filename)[1]}"
+    with open(tmp_path, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+        key = f"faces/{uuid.uuid4().hex}{os.path.splitext(tmp_path)[1]}"
     try:
-        contents = await file.read()
-        file_stream=io.BytesIO(contents)
-        s3.upload_fileobj(
-            Fileobj=file_stream,
-            Bucket=BUCKET_NAME,
-            Key=file.filename,
-            ExtraArgs={"ContentType": file.content_type}
-        )
-        url = f"https://{BUCKET_NAME}.s3.{AWS_REGION}.amazonaws.com/{file.filename}"
+      
+        s3.upload_file(tmp_path, BUCKET_NAME, key, ExtraArgs={"ContentType": file.content_type})
+       
+        #contents = await file.read()
+        #file_stream=io.BytesIO(contents)
+        #s3.upload_fileobj(
+            #Fileobj=file_stream,
+            #Bucket=BUCKET_NAME,
+            #Key=file.filename,
+            #ExtraArgs={"ContentType": file.content_type}
+        #)
+        url = f"https://{BUCKET_NAME}.s3.{AWS_REGION}.amazonaws.com/{key}"
         print(url)
-        return {"url": url}
+        return {"url": url, "key":key}
     except NoCredentialsError:
         return {"error": "Credenciais inválidas"}
 
