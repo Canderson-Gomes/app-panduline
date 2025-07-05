@@ -11,9 +11,14 @@ load_dotenv()
 
 
 app = FastAPI()
+origins=[
+    "localhost:3000",
+    "https://site-panduline-free.onrender.com"
+]
+    
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Ou apenas o domínio do frontend
+    allow_origins=origins,  # Ou apenas o domínio do frontend
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
