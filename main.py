@@ -3,9 +3,12 @@ import boto3
 import json, io, uuid
 from botocore.exceptions import NoCredentialsError
 import os, shutil
+import insightface
+from insightface.app import FaceAnalysis
+import cv2
 from dotenv import load_dotenv
 from fastapi.middleware.cors import CORSMiddleware
-
+#from faiss_index import FaissIndex
 
 load_dotenv()
 
@@ -41,7 +44,14 @@ s3 = boto3.client("s3",
 async def getting():
     
     return {"api":"api no ar"}
-    
+
+_face_app = None
+
+def init_model():
+    global _face_app
+    if _face_app is None:
+        _face_app = FaceAnalysis(name='buffalo_l')
+        _face_app.prepare(ctx_id=0)
 @app.post("/upload")
 async def upload_file(file: UploadFile = File(...)):
     #
@@ -53,7 +63,12 @@ async def upload_file(file: UploadFile = File(...)):
     try:
       
         s3.upload_file(tmp_path, BUCKET_NAME, key, ExtraArgs={"ContentType": file.content_type})
-       
+    #OBTEMOS O EMBEDDING
+        init_model()
+        img = cv2.imread(tmp_path)
+        faces = _face_app.get(img)
+        embedding=faces[0].embedding.astype(np.float32)   
+        os.remove(tmp_path)
         #contents = await file.read()
         #file_stream=io.BytesIO(contents)
         #s3.upload_fileobj(
@@ -64,7 +79,7 @@ async def upload_file(file: UploadFile = File(...)):
         #)
         url = f"https://{BUCKET_NAME}.s3.{AWS_REGION}.amazonaws.com/{key}"
         print(url)
-        return {"url": url, "key":key}
+        return {"url": url, "key":key, "emb": embedding}
     except NoCredentialsError:
         return {"error": "Credenciais inválidas"}
 
