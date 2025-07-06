@@ -1,4 +1,4 @@
-from fastapi import FastAPI, UploadFile, File
+ifrom fastapi import FastAPI, UploadFile, File
 import boto3
 import json, io, uuid
 from botocore.exceptions import NoCredentialsError
@@ -43,7 +43,7 @@ s3 = boto3.client("s3",
     aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
     region_name=AWS_REGION
 )
-@app.get("/")
+@app.post("/")
 async def getting():
     
     return {"api":"api no ar"}
