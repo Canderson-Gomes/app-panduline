@@ -90,9 +90,18 @@ async def upload_file(file: UploadFile = File(...)):
         #)
         url = f"https://{BUCKET_NAME}.s3.{AWS_REGION}.amazonaws.com/{key}"
         #index.add(embedding)
-        print(url)
-        print(embedding)
-        return {"url": url, "key": key, "embed": embedding.tolist()}
+        
+        print("Final JSON a ser retornado:")
+print({
+    "image_url": url,
+    "key": key,
+    "embedding": embedding.tolist()
+})
+        return {
+    "image_url": url,
+    "key": key,
+    "embedding": embedding.tolist()
+}
     except NoCredentialsError:
         return {"error": "Credenciais inválidas"}
 
