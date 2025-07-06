@@ -51,7 +51,7 @@ def init_model():
     global _face_app
     if _face_app is None:
         _face_app = FaceAnalysis(name='buffalo_l')
-        _face_app.prepare(ctx_id=0)
+        _face_app.prepare(ctx_id=-1)
 @app.post("/upload")
 async def upload_file(file: UploadFile = File(...)):
     #
