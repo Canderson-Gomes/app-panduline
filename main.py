@@ -92,9 +92,9 @@ async def upload_file(file: UploadFile = File(...)):
         #index.add(embedding)
         
         print("Final JSON a ser retornado:")
-print(embedding.tolist())
+        print({"image_url": url, "key": key, "embedding": embedding.tolist()})
         return {"image_url": url, "key": key, "embedding": embedding.tolist()}
-    except NoCredentialsError:
+     except NoCredentialsError:
         return {"error": "Credenciais inválidas"}
 
 
