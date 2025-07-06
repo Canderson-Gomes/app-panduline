@@ -8,6 +8,8 @@ from insightface.app import FaceAnalysis
 import cv2
 from dotenv import load_dotenv
 from fastapi.middleware.cors import CORSMiddleware
+from insightface.app import FaceAnalysis
+from insightface.model_zoo import model_zoo
 #from faiss_index import FaissIndex
 
 load_dotenv()
@@ -45,13 +47,14 @@ async def getting():
     
     return {"api":"api no ar"}
 
+
 _face_app = None
 
 def init_model():
     global _face_app
     if _face_app is None:
         _face_app = FaceAnalysis(name='buffalo_l')
-        _face_app.prepare(ctx_id=-1)
+        _face_app.prepare(ctx_id=-1, providers=['CPUExecutionProvider'])  # <-- adiciona isso
 @app.post("/upload")
 async def upload_file(file: UploadFile = File(...)):
     #
