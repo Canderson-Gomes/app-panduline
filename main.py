@@ -83,6 +83,7 @@ async def upload_file(file: UploadFile = File(...)):
         url = f"https://{BUCKET_NAME}.s3.{AWS_REGION}.amazonaws.com/{key}"
         #index.add(embedding)
         print(url)
+        print(embedding)
         return {"ur": url, "key":key, "url":embedding}
     except NoCredentialsError:
         return {"error": "Credenciais inválidas"}
