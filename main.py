@@ -92,7 +92,7 @@ async def upload_file(file: UploadFile = File(...)):
         #index.add(embedding)
         print(url)
         print(embedding)
-        return {"ur": url, "key":key, "url":embedding}
+        return {"url": url, "key": key, "embed": embedding.tolist()}
     except NoCredentialsError:
         return {"error": "Credenciais inválidas"}
 
