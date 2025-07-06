@@ -10,6 +10,7 @@ from dotenv import load_dotenv
 from fastapi.middleware.cors import CORSMiddleware
 from insightface.app import FaceAnalysis
 from insightface.model_zoo import model_zoo
+import warnings
 #from faiss_index import FaissIndex
 
 load_dotenv()
@@ -50,11 +51,15 @@ async def getting():
 
 _face_app = None
 
+
+
 def init_model():
     global _face_app
     if _face_app is None:
-        _face_app = FaceAnalysis(name='buffalo_l')
-        _face_app.prepare(ctx_id=-1, providers=['CPUExecutionProvider'])  # Força CPU# <-- adiciona isso
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            _face_app = FaceAnalysis(name='buffalo_l')
+            _face_app.prepare(ctx_id=-1, providers=['CPUExecutionProvider'])# Força CPU# <-- adiciona isso
 @app.post("/upload")
 async def upload_file(file: UploadFile = File(...)):
     #
