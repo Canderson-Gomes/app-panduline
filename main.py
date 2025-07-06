@@ -64,11 +64,14 @@ async def upload_file(file: UploadFile = File(...)):
       
         s3.upload_file(tmp_path, BUCKET_NAME, key, ExtraArgs={"ContentType": file.content_type})
     #OBTEMOS O EMBEDDING
-        init_model()
-        img = cv2.imread(tmp_path)
-        faces = _face_app.get(img)
-        embedding=faces[0].embedding.astype(np.float32)   
-        os.remove(tmp_path)
+        #init_model()
+        #img = cv2.imread(tmp_path)
+        #faces = _face_app.get(img)
+        #embedding=faces[0].embedding.astype(np.float32)   
+        #os.remove(tmp_path)
+
+
+        
         #contents = await file.read()
         #file_stream=io.BytesIO(contents)
         #s3.upload_fileobj(
@@ -80,7 +83,7 @@ async def upload_file(file: UploadFile = File(...)):
         url = f"https://{BUCKET_NAME}.s3.{AWS_REGION}.amazonaws.com/{key}"
         #index.add(embedding)
         print(url)
-        return {"url": url, "key":key, "emb": embedding}
+        return {"url": url, "key":key}
     except NoCredentialsError:
         return {"error": "Credenciais inválidas"}
 
