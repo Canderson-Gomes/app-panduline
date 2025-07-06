@@ -54,7 +54,7 @@ def init_model():
     global _face_app
     if _face_app is None:
         _face_app = FaceAnalysis(name='buffalo_l')
-        _face_app.prepare(ctx_id=-1, providers=['CPUExecutionProvider'])  # <-- adiciona isso
+        _face_app.prepare(ctx_id=-1, providers=['CPUExecutionProvider'])  # Força CPU# <-- adiciona isso
 @app.post("/upload")
 async def upload_file(file: UploadFile = File(...)):
     #
