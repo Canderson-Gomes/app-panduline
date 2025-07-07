@@ -4,7 +4,7 @@ import json, io, uuid
 from botocore.exceptions import NoCredentialsError
 import os, shutil
 import insightface
-from insightface.app import FaceAnalysis
+#from insightface.app import FaceAnalysis
 import cv2
 from dotenv import load_dotenv
 from fastapi.middleware.cors import CORSMiddleware
