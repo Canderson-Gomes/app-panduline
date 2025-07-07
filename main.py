@@ -11,12 +11,19 @@ from fastapi.middleware.cors import CORSMiddleware
 from insightface.app import FaceAnalysis
 from insightface.model_zoo import model_zoo
 import warnings
+
+from sqlalchemy.orm import Session
+from database import SessionLocal, engine
+from models import Base, Person
+from utils.face_encoder import get_embedding
+from utils.s3_upload import upload_file
 #from faiss_index import FaissIndex
 
 load_dotenv()
 
 
 app = FastAPI()
+Base.metadata.create_all(bind=engine)
 origins=[
     "localhost:3000",
     "https://site-panduline-free.onrender.com"
@@ -51,7 +58,18 @@ async def getting():
 
 _face_app = None
 
+@app.on_event("startup")
+def build_index():
+    db = SessionLocal()
+    index.rebuild_from_db(db)
+    db.close()
 
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 def init_model():
     global _face_app
@@ -61,7 +79,7 @@ def init_model():
             _face_app = FaceAnalysis(name='buffalo_l')
             _face_app.prepare(ctx_id=-1, providers=['CPUExecutionProvider'])# Força CPU# <-- adiciona isso
 @app.post("/upload")
-async def upload_file(file: UploadFile = File(...)):
+async def upload_file(file: UploadFile = File(...), db: Session = Depends(get_db)):
     #
     #return {"sucesso":"Main sucess"}
     tmp_path = f"temp_{uuid.uuid4().hex}{os.path.splitext(file.filename)[1]}"
@@ -79,7 +97,10 @@ async def upload_file(file: UploadFile = File(...)):
         os.remove(tmp_path)
 
 
-        
+        person = Person(image_url= key, embedding=embedding.tolist())
+        db.add(person)
+        db.commit()
+        db.refresh(person)
         #contents = await file.read()
         #file_stream=io.BytesIO(contents)
         #s3.upload_fileobj(
