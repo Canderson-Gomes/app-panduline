@@ -6,4 +6,4 @@ class Person(Base):
     id = Column(Integer, primary_key=True, index=True)
     image_url = Column(String, nullable=False)
     embedding = Column(ARRAY(Float), nullable=False)
-    created_at= Column(ARRAY, nullable=False)
+    #created_at= Column(ARRAY, nullable=False)
