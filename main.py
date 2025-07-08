@@ -19,8 +19,8 @@ from faiss_index import FaissIndex
 #CONFIGURAR O DATA BASE------------------------------------------------#####################################################
 from sqlalchemy import create_engine, Column, Integer, String, ARRAY, TIMESTAMP
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
-import os
+from sqlalchemy.orm import sessionmaker, Session
+
 ##########################################################
 load_dotenv()
 app = FastAPI()
