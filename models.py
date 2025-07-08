@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, Float, TIMESTAMP
-import sqlalchemy.dialects.postgresql import ARRAY
+from sqlalchemy.dialects.postgresql import ARRAY
 from database import Base
 
 class Person(Base):
