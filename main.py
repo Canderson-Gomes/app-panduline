@@ -85,15 +85,14 @@ def build_index():
     index.rebuild_from_db(db)
     db.close()
 
+
+    '''
 def get_db():
     db = SessionLocal()
     try:
         yield db
     finally:
         db.close()
-
-    '''
-
 def init_model():
     global _face_app
     if _face_app is None:
@@ -104,7 +103,7 @@ def init_model():
 
 
 @app.post("/upload")
-async def upload_file(file: UploadFile = File(...)):#, db: Session = Depends(get_db)
+async def upload_file(file: UploadFile = File(...), db: Session=Depends(get_db)):#db: Session=Depends(get_db), title:str=Form(...)
     #
     #return {"sucesso":"Main sucess"}
     tmp_path = f"temp_{uuid.uuid4().hex}{os.path.splitext(file.filename)[1]}"
