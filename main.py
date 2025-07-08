@@ -150,8 +150,12 @@ async def upload_file(file: UploadFile = File(...), db: Session=Depends(get_db))
         print(url)
         return {"image_url": url}
     except NoCredentialsError:
-        return {"error": "Credenciais inválidas"}
+        return {"error": "Credenciais inválidas"
 
+if __name__ == "__main__":
+    import uvicorn
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run("main:app", host="0.0.0.0", port=port)
 
 
 
