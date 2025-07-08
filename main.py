@@ -82,7 +82,7 @@ def init_model():
 
 
 @app.post("/upload")
-async def upload_file(file: UploadFile = File(...), db: Session = Depends(get_db)):
+async def upload_file(file: UploadFile = File(...)):#, db: Session = Depends(get_db)
     #
     #return {"sucesso":"Main sucess"}
     tmp_path = f"temp_{uuid.uuid4().hex}{os.path.splitext(file.filename)[1]}"
