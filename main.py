@@ -1,23 +1,18 @@
 from fastapi import FastAPI, UploadFile, File, Depends
-import boto3
-import json, io, uuid
-from botocore.exceptions import NoCredentialsError
-import os, shutil
-import insightface
-#from insightface.app import FaceAnalysis
-import cv2
-from dotenv import load_dotenv
 from fastapi.middleware.cors import CORSMiddleware
+from botocore.exceptions import NoCredentialsError
+import os, shutil, cv2, insightface, json, io, uuid, boto3
+from dotenv import load_dotenv
 from insightface.app import FaceAnalysis
 from insightface.model_zoo import model_zoo
 import warnings
-
-from sqlalchemy.orm import Session
-from database import SessionLocal, engine
-from models import Base, Person
-from utils.face_encoder import get_embedding
-from utils.s3_upload import upload_file
 from faiss_index import FaissIndex
+#from sqlalchemy.orm import Session
+#from database import SessionLocal, engine
+#from models import Base, Person
+#from utils.face_encoder import get_embedding
+#from utils.s3_upload import upload_file
+
 #from faiss_index import FaissIndex  # se tiver essa classe num outro arquivo
 
   # ou qualquer valor que seja o dimensional do seu embedding
@@ -25,8 +20,9 @@ load_dotenv()
 
 
 app = FastAPI()
-Base.metadata.create_all(bind=engine)
+#Base.metadata.create_all(bind=engine)
 index = FaissIndex()
+
 origins=[
     "localhost:3000",
     "https://site-panduline-free.onrender.com"
@@ -53,14 +49,14 @@ s3 = boto3.client("s3",
     aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
     region_name=AWS_REGION
 )
-@app.post("/")
-async def getting():
-    
+@app.get("/")
+async def getting():  
     return {"api":"api no ar"}
 
 
 _face_app = None
 
+'''
 @app.on_event("startup")
 def build_index():
     db = SessionLocal()
@@ -74,6 +70,8 @@ def get_db():
     finally:
         db.close()
 
+    '''
+
 def init_model():
     global _face_app
     if _face_app is None:
@@ -81,6 +79,8 @@ def init_model():
             warnings.simplefilter("ignore")
             _face_app = FaceAnalysis(name='buffalo_l')
             _face_app.prepare(ctx_id=-1, providers=['CPUExecutionProvider'])# Força CPU# <-- adiciona isso
+
+
 @app.post("/upload")
 async def upload_file(file: UploadFile = File(...), db: Session = Depends(get_db)):
     #
@@ -100,10 +100,11 @@ async def upload_file(file: UploadFile = File(...), db: Session = Depends(get_db
         os.remove(tmp_path)
 
 
-        person = Person(image_url= key, embedding=embedding.tolist())
-        db.add(person)
-        db.commit()
-        db.refresh(person)
+        #person = Person(image_url= key, embedding=embedding.tolist())
+        #db.add(person)
+        #db.commit()
+        #db.refresh(person)
+      
         #contents = await file.read()
         #file_stream=io.BytesIO(contents)
         #s3.upload_fileobj(
