@@ -37,7 +37,7 @@ SessionLocal=sessionmaker(bind=engine)
 Base= declarative_base()
 
 class Pessoa(Base):
-    __tablename__="people"
+    __tablename__="peoples"
     id = Column(Integer, primary_key=True, index=True)
     image_url= Column(String, nullable=False)
     #descript=Column(String, nullable=True)
