@@ -16,18 +16,40 @@ from faiss_index import FaissIndex
 #from faiss_index import FaissIndex  # se tiver essa classe num outro arquivo
 
   # ou qualquer valor que seja o dimensional do seu embedding
+#CONFIGURAR O DATA BASE------------------------------------------------#####################################################
+from sqlalchemy import create_engine, Column, Integer, String, ARRAY, TIMESTAMP
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
+import os
+##########################################################
 load_dotenv()
-
-
 app = FastAPI()
 #Base.metadata.create_all(bind=engine)
 index = FaissIndex()
-
 origins=[
     "localhost:3000",
     "https://site-panduline-free.onrender.com"
 ]
-    
+###########################################################################################
+DATABASE_URL="postgresql://cggomes:nE3cRJBtkPnKDOoDbl7imSjArThmzv42@dpg-d1he362dbo4c73da8iog-a.oregon-postgres.render.com/pessoa_desaparecidas"
+engine=create_engine(DATABASE_URL)
+SessionLocal=sessionmaker(bind=engine)
+Base= declarative_base()
+
+class Pessoa(Base):
+    __tablename__="people"
+    id = Column(Integer, primary_key=True, index=True)
+    image_url= Column(String, nullable=False)
+    #descript=Column(String, nullable=True)
+    #created_at=Column(TIMESTAMP)
+
+#Criar as tables caso não existam
+Base.metadata.create_all(bind=engine)
+#################################################------------##########################################################
+
+
+
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,  # Ou apenas o domínio do frontend
@@ -113,6 +135,15 @@ async def upload_file(file: UploadFile = File(...)):#, db: Session = Depends(get
             #Key=file.filename,
             #ExtraArgs={"ContentType": file.content_type}
         #)
+        #######################...ADD TO DATA BASE.............########################---------------------------################
+
+        pessoa=Pessoa(image_url= key, embedding=embedding.tolist())
+        print(pessoa)
+        db.add(pessoa)
+        db.commit()
+        db.refresh(pessoa)
+      
+        ######################.................."""""""""""""""""""""""############################################
         url = f"https://{BUCKET_NAME}.s3.{AWS_REGION}.amazonaws.com/{key}"
         #index.add(embedding)
         
