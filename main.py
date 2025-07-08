@@ -1,4 +1,4 @@
-from fastapi import FastAPI, UploadFile, File
+from fastapi import FastAPI, UploadFile, File, Depends
 import boto3
 import json, io, uuid
 from botocore.exceptions import NoCredentialsError
