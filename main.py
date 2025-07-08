@@ -17,13 +17,16 @@ from database import SessionLocal, engine
 from models import Base, Person
 from utils.face_encoder import get_embedding
 from utils.s3_upload import upload_file
-#from faiss_index import FaissIndex
+from faiss_index import FaissIndex
+#from faiss_index import FaissIndex  # se tiver essa classe num outro arquivo
 
+  # ou qualquer valor que seja o dimensional do seu embedding
 load_dotenv()
 
 
 app = FastAPI()
 Base.metadata.create_all(bind=engine)
+index = FaissIndex(d=512)
 origins=[
     "localhost:3000",
     "https://site-panduline-free.onrender.com"
