@@ -13,7 +13,7 @@ s3 = boto3.client("s3",
     region_name=AWS_REGION
 )
 
-def upload_file(local_path: str) -> str:
+async def upload_file(local_path: str) -> str:
     key = f"faces/{uuid.uuid4().hex}{os.path.splitext(local_path)[1]}"
     try:
         #s3.upload_file(local_path, S3_BUCKET, key, ExtraArgs={'ACL': 'public-read'})
