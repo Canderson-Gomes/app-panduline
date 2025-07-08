@@ -26,7 +26,7 @@ load_dotenv()
 
 app = FastAPI()
 Base.metadata.create_all(bind=engine)
-index = FaissIndex(d=512)
+index = FaissIndex()
 origins=[
     "localhost:3000",
     "https://site-panduline-free.onrender.com"
