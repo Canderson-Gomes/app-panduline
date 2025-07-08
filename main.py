@@ -78,15 +78,13 @@ async def getting():
 
 _face_app = None
 
-'''
+
 @app.on_event("startup")
 def build_index():
     db = SessionLocal()
     index.rebuild_from_db(db)
     db.close()
 
-
-    '''
 def get_db():
     db = SessionLocal()
     try:
@@ -114,11 +112,11 @@ async def upload_file(file: UploadFile = File(...), db: Session=Depends(get_db))
       
         s3.upload_file(tmp_path, BUCKET_NAME, key, ExtraArgs={"ContentType": file.content_type})
     #OBTEMOS O EMBEDDING
-        init_model()
-        img = cv2.imread(tmp_path)
-        faces = _face_app.get(img)
-        embedding=faces[0].embedding.astype(np.float32)   
-        os.remove(tmp_path)
+        #init_model()
+        #img = cv2.imread(tmp_path)
+        #faces = _face_app.get(img)
+        #embedding=faces[0].embedding.astype(np.float32)   
+        #os.remove(tmp_path)
 
 
         #person = Person(image_url= key, embedding=embedding.tolist())
@@ -136,7 +134,7 @@ async def upload_file(file: UploadFile = File(...), db: Session=Depends(get_db))
         #)
         #######################...ADD TO DATA BASE.............########################---------------------------################
 
-        pessoa=Pessoa(image_url= key, embedding=embedding.tolist())
+        pessoa=Pessoa(image_url= key) #embedding=embedding.tolist())
         print(pessoa)
         db.add(pessoa)
         db.commit()
