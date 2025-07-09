@@ -20,7 +20,6 @@ from faiss_index import FaissIndex
 from sqlalchemy import create_engine, Column, Integer, String, ARRAY
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, Session
-
 ##########################################################
 load_dotenv()
 app = FastAPI()
@@ -32,9 +31,15 @@ origins=[
 ]
 ###########################################################################################
 DATABASE_URL="postgresql://cggomes:nE3cRJBtkPnKDOoDbl7imSjArThmzv42@dpg-d1he362dbo4c73da8iog-a.oregon-postgres.render.com/pessoa_desaparecidas"
-engine=create_engine(DATABASE_URL)
-SessionLocal=sessionmaker(bind=engine)
-Base= declarative_base()
+
+
+#engine=create_engine(DATABASE_URL)
+#SessionLocal=sessionmaker(bind=engine)
+#Base= declarative_base()
+
+engine = create_engine(DATABASE_URL, pool_pre_ping=True)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+Base = declarative_base()
 
 class Pessoa(Base):
     __tablename__="people"
