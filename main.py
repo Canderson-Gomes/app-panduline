@@ -42,7 +42,7 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
 class Pessoa(Base):
-    __tablename__="people"
+    __tablename__="peoples"
     id = Column(Integer, primary_key=True, index=True)
     image_url= Column(String, nullable=False)
     #descript=Column(String, nullable=True)
@@ -143,7 +143,7 @@ async def upload_file(file: UploadFile = File(...), db: Session=Depends(get_db))
         print(pessoa)
         db.add(pessoa)
         db.commit()
-        db.refresh(pessoa)
+        #db.refresh(pessoa)
       
         ######################.................."""""""""""""""""""""""############################################
         url = f"https://{BUCKET_NAME}.s3.{AWS_REGION}.amazonaws.com/{key}"
