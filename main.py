@@ -76,9 +76,10 @@ s3 = boto3.client("s3",
     aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
     region_name=AWS_REGION
 )
-@app.get("/")
-async def getting():  
-    return {"api":"api no ar"}
+@app.get("/api")
+async def getting(db: Session=Depends(get_db)):  
+  db_results=db.query(Pessoa).all()
+  return {"api": db_results}
 
 
 _face_app = None
