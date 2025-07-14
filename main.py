@@ -74,12 +74,7 @@ BUCKET_NAME = "app-panduline"
 s3 = boto3.client("s3",
     aws_access_key_id=AWS_ACCESS_KEY_ID,
     aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
-    region_name=AWS_REGION
-)
-@app.get("/api")
-async def getting(db: Session=Depends(get_db)):  
-  db_results=db.query(Pessoa).all()
-  return {"api": db_results}
+    region_name=AWS_REGION)
 
 
 _face_app = None
@@ -106,6 +101,13 @@ def init_model():
             _face_app.prepare(ctx_id=-1, providers=['CPUExecutionProvider'])# Força CPU# <-- adiciona isso
 
 
+
+
+@app.get("/api")
+async def getting(db: Session=Depends(get_db)):  
+  db_results=db.query(Pessoa).all()
+  return {"api": db_results}
+  
 @app.post("/upload")
 async def upload_file(file: UploadFile = File(...), db: Session=Depends(get_db)):#db: Session=Depends(get_db), title:str=Form(...)
     #
