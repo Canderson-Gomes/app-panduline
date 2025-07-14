@@ -84,11 +84,11 @@ async def getting():
 _face_app = None
 
 
-@app.on_event("startup")
-def build_index():
-    db = SessionLocal()
-    index.rebuild_from_db(db)
-    db.close()
+#@app.on_event("startup")
+#def build_index():
+    #db = SessionLocal()
+    #index.rebuild_from_db(db)
+    #db.close()
 
 def get_db():
     db = SessionLocal()
