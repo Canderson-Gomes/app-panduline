@@ -1,4 +1,5 @@
 from fastapi import FastAPI, UploadFile, File, Depends
+from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from botocore.exceptions import NoCredentialsError
 import os, shutil, cv2, insightface, json, io, uuid, boto3
@@ -106,7 +107,7 @@ def init_model():
 @app.get("/api")
 async def getting(db: Session=Depends(get_db)):  
   db_results=db.query(Pessoa).all()
-  return {"api": db_results}
+  return JSONResponse(content={"api":db_results})
   
 @app.post("/upload")
 async def upload_file(file: UploadFile = File(...), db: Session=Depends(get_db)):#db: Session=Depends(get_db), title:str=Form(...)
